@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS Donation;
+DROP TABLE IF EXISTS EcoProject;
+DROP TABLE IF EXISTS Subscription;
+DROP TABLE IF EXISTS SubscriptionProvider;
+DROP TABLE IF EXISTS User;
 
 CREATE TABLE User(
     id TEXT PRIMARY KEY,
@@ -11,11 +16,11 @@ CREATE TABLE SubscriptionProvider(
     name TEXT NOT NULL,
     logo_url TEXT,
     -- Some providers will be provided by us to improve UX, but users can input any provider they want.
-    is_custom INTEGER DEFAULT 1
+    is_custom INTEGER DEFAULT 1,
     created_by TEXT,
     /* For non-custom providers, this value is set by us. Else, the user can (but is not forced to) enter the estimated footprint of this
     provider. */
-    carbon_footprint REAL
+    carbon_footprint REAL,
     FOREIGN KEY (created_by) REFERENCES User(id)
 );
 
@@ -29,7 +34,8 @@ CREATE TABLE Subscription(
     price REAL,
     baseDate INTEGER, -- Stored as UNIX timestamp
     reccurence_unit TEXT, -- per week, per month, per year, etc. 
-    reccurence INTEGER -- e.g. 1 for weekly/monthly/yearly, 2 for every 2 weeks/2 months/2 years, etc.
+    reccurence INTEGER, -- e.g. 1 for weekly/monthly/yearly, 2 for every 2
+    -- weeks/2 months/2 years, etc.
 
     FOREIGN KEY (provider_id) REFERENCES SubscriptionProvider(id),
     FOREIGN KEY (user_id) REFERENCES User(id)
