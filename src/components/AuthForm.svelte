@@ -1,5 +1,5 @@
 <script>
-	let selectedTab = $state('register');
+	let selectedTab = $state('login');
 
 	let emailValue = $state('');
 	let passwordValue = $state('');
@@ -51,7 +51,7 @@
 			data-selected={selectedTab}>
 		</div>
 	</div>
-	<form action="/api/auth/login" method="GET" data-tab='login'>
+	<form action="/api/login" method="POST" data-tab='login'>
 		<h1>Welcome back!</h1>
 		<div class="input-container">
 			<input name='email' type="text" placeholder=" "  />
@@ -70,7 +70,7 @@
 			<button type="submit">Login</button>
 		</div>
 	</form>
-	<form action="/api/auth/register" method="POST" data-tab="register">
+	<form action="/api/register" method="POST" data-tab="register">
 		<h1>Welcome to the family!</h1>
 		<div class="input-container">
 			<input type="text" name="email" placeholder=" " bind:value={emailValue} data-valid={emailValid}/>
