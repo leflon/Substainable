@@ -38,7 +38,7 @@
 </script>
 
 <div
-	class="relative fixed w-full h-full overflow-hidden
+	class="fixed w-full h-full overflow-hidden
 		md:w-128 md:h-128 md:border-2 md:border-gray-200 md:rounded-lg md:shadow-md
 		shadow-gray-200 md:top-1/2 md:left-1/2 md:transform-[translate(-50%,-50%)]"
      data-selected={selectedTab}
@@ -107,7 +107,7 @@
 	@import 'tailwindcss';
 
 	.form-tab {
-		@apply h-full w-1/2 flex items-center justify-center text-xl;
+		@apply h-full w-1/2 flex items-center justify-center text-xl cursor-pointer;
 	}
 
 	.indicator[data-selected='register'] {
@@ -173,7 +173,7 @@
 
 	.form-footer button {
 		@apply flex items-center justify-center px-4 py-1 rounded-sm bg-blue-400
-		text-white text-lg transition-all duration-200;
+		text-white text-lg transition-all duration-200 cursor-pointer;
 	}
 
 	button[disabled] {
