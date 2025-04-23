@@ -1,67 +1,54 @@
--- DROP TABLES IF THEY EXIST
-DROP TABLE IF EXISTS Donation;
-DROP TABLE IF EXISTS UserSubscription;
-DROP TABLE IF EXISTS User;
-DROP TABLE IF EXISTS Subscription;
-DROP TABLE IF EXISTS EcoProject;
 
--- CREATE TABLES
 CREATE TABLE User(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    isAdmin INTEGER NOT NULL,
-    username TEXT NOT NULL,
+    id TEXT PRIMARY KEY,
+    is_admin INTEGER DEFAULT 0,
+    email TEXT,
+    password_hash TEXT
+);
+
+CREATE TABLE SubscriptionProvider(
+    id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
-    surname TEXT NOT NULL,
-    password_hash TEXT NOT NULL,
-    -- Sum of userSubCarbonFootprints of the user
-    totalCarbonFootprint REAL,
-    -- Computed as :
-    -- totalCarbonFootprint - (totalDonation in € * offset)
-    -- Here, the offset was arbitrarily set as 2kgCO2e "saved" per 1€
-    ecoDebt REAL
+    logo_url TEXT,
+    -- Some providers will be provided by us to improve UX, but users can input any provider they want.
+    is_custom INTEGER DEFAULT 1
+    created_by TEXT,
+    /* For non-custom providers, this value is set by us. Else, the user can (but is not forced to) enter the estimated footprint of this
+    provider. */
+    carbon_footprint REAL
+    FOREIGN KEY (created_by) REFERENCES User(id)
 );
 
 CREATE TABLE Subscription(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    type TEXT CHECK (type IN ('Single', 'Duo', 'Family', 'Student')) NOT NULL,
-    platform TEXT NOT NULL,
-    monthlyPrice REAL NOT NULL,
-    -- Data taken from
-    -- https://greenly.earth/en-gb/leaf-media/data-stories/the-carbon-cost-of-streaming
-    monthlyCarbonFootprint REAL NOT NULL
+    id TEXT PRIMARY KEY,
+    provider_id TEXT,
+    user_id TEXT, 
+    -- We do not store the price in the provider, because prices vary too much based on time, location, subscription type, etc. 
+    -- And the user could also be sharing this subscription with someone else, making the price even more variable. So it is up
+    -- to the user to enter the price of the subscription.
+    price REAL,
+    baseDate INTEGER, -- Stored as UNIX timestamp
+    reccurence_unit TEXT, -- per week, per month, per year, etc. 
+    reccurence INTEGER -- e.g. 1 for weekly/monthly/yearly, 2 for every 2 weeks/2 months/2 years, etc.
+
+    FOREIGN KEY (provider_id) REFERENCES SubscriptionProvider(id),
+    FOREIGN KEY (user_id) REFERENCES User(id)
 );
 
 CREATE TABLE EcoProject(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id TEXT,
     name TEXT NOT NULL,
     description TEXT NOT NULL,
-    dateLaunch TEXT NOT NULL,
-    goalMoney REAL NOT NULL,
-    collectedMoney REAL NOT NULL,
-    founderCompany TEXT NOT NULL
+    organization_name TEXT NOT NULL,
+    link TEXT NOT NULL
 );
 
 CREATE TABLE Donation(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    donorId INTEGER NOT NULL,
-    projectId INTEGER NOT NULL,
+    user_id TEXT NOT NULL,
+    project_id TEXT NOT NULL,
     amount REAL NOT NULL,
-    dateDonation TEXT NOT NULL,
-    FOREIGN KEY(donorId) REFERENCES User(id),
-    FOREIGN KEY(projectId) REFERENCES EcoProject(id)
+    donated_at INTEGER NOT NULL, -- Stored as UNIX timestamp
+    FOREIGN KEY(user_id) REFERENCES User(id),
+    FOREIGN KEY(project_id) REFERENCES EcoProject(id)
 );
-
-
-CREATE TABLE UserSubscription(
-    userId INTEGER NOT NULL,
-    subId INTEGER NOT NULL,
-    startDate TEXT NOT NULL,
-    endDate TEXT,
-    -- Computed as :
-    -- monthlyCarbonFootprint * number of months since subscription
-    userSubCarbonFootprint REAL NOT NULL,
-    PRIMARY KEY(userId, subId, startDate),
-    FOREIGN KEY(userId) REFERENCES User(id),
-    FOREIGN KEY(subId) REFERENCES Subscription(id)
-);
-
