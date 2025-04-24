@@ -10,7 +10,7 @@
 	console.log(className);
 </script>
 
-<div class={"relative my-2 w-[max-content] " + className}>
+<div class={"relative my-2 h-8 w-[max-content] " + className}>
 	<input
 		type={type}
 		name={name}

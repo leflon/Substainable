@@ -191,14 +191,7 @@
 		@apply flex items-center justify-end gap-2;
 	}
 
-	.form-footer button {
-		@apply flex items-center justify-center px-4 py-1 rounded-sm bg-blue-400
-		text-white text-lg transition-all duration-200 cursor-pointer;
-	}
 
-	button[disabled] {
-		@apply cursor-not-allowed bg-gray-300;
-	}
 
 	input[data-valid='false'],
 	input[data-valid='valid']:focus {
