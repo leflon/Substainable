@@ -34,8 +34,35 @@ export function addProvider(name, carbonFootprint, userId) {
 
 
 const addSubQuery = db.query(`INSERT INTO Subscription VALUES (?, ?, ?, ?, ?, ?, ?)`);
-export function addSubscription(providerId, userId, price, baseDate, recurrenceUnit, reccurence) {
+export function addSubscription(providerId, userId, price, baseDate, recurrenceUnit, recurence) {
 	const id = v4();
-	addSubQuery.run(id, providerId, userId, price, baseDate, recurrenceUnit, reccurence);
+	addSubQuery.run(id, providerId, userId, price, baseDate, recurrenceUnit, recurence);
 	return id;
+}
+
+const getUserSubsQuery = db.query(`SELECT * FROM Subscription s 
+		                                     JOIN SubscriptionProvider p ON s.provider_id = p.id 
+																				 WHERE user_id = ?`);
+export function getUserSubscriptions(userId) {
+	return getUserSubsQuery.all(userId);
+}
+
+function editRow(table, id, edits) {
+	let queryText = `UPDATE ${table} SET `;
+	const queryArgs = [];
+	for (const [k, v] of Object.entries(edits)) {
+		queryText += `${k} = ?, `;
+		queryArgs.push(v);
+	}
+	queryText = queryText.slice(0, -2);
+	queryText += ` WHERE id = ?`;
+	queryArgs.push(id);
+}
+
+export function editSubscription(id, edits) {
+	editRow('Subscription', id, edits);
+}
+
+export function editProvider(id, edits) {
+	editRow('SubscriptionProvider', id, edits);
 }
