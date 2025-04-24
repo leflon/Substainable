@@ -7,6 +7,13 @@
 	$effect(() => {
 		//TODO: fetch CO2 emissions from API when provider is selected
 	})
+
+	function handleSubmit(event) {
+		if (provider === '') {
+			event.preventDefault();
+			alert('Please select a provider');
+		}
+	}
 </script>
 
 <div
@@ -17,6 +24,7 @@
 		method="POST"
 		class="overflow-hidden px-3 w-full h-full box-border bg-white
 		lg:w-230 lg:h-128 lg:rounded-lg lg:shadow-lg"
+		onsubmit={handleSubmit}
 	>
 		<h1 class="my-4 font-bold text-3xl text-center">Add subscription</h1>
 		<h2>Details</h2>
@@ -32,16 +40,18 @@
 					<div class="input-label"> Provider name</div>
 					<TextInput type="text"
 					           name="provider-name"
-					           placeholder="A great company" />
+					           placeholder="A great company"
+					           required={true}
+					/>
 				</div>
 			{/if}
 			<div class="input-container">
 				<div class="input-label">CO2 emissions</div>
-				<TextInput type="number" name="emissions" placeholder="(kg CO₂e)"/>
+				<TextInput type="number" name="emissions" placeholder="(kg CO₂e)" required={true} />
 			</div>
 			<div class="input-container">
 				<div class="input-label">Price</div>
-				<TextInput type="number" name="price" placeholder="(€)"/>
+				<TextInput type="number" name="price" placeholder="(€)" required={true}/>
 			</div>
 		</div>
 		<h2>Timing</h2>
@@ -51,6 +61,7 @@
 				<input
 					name="base-date" type="date"
 					value={new Date().toISOString().substring(0, 10)}
+					required
 				/>
 			</div>
 			<div class="input-container">
@@ -58,6 +69,7 @@
 				<select
 					bind:value={recurrenceUnit}
 					name="recurrence-unit"
+					required
 				>
 					<option value="week">Week</option>
 					<option value="month" selected>Month</option>
@@ -68,7 +80,9 @@
 				<div class="input-label">Interval</div>
 				<TextInput
 					placeholder={`Every # ${recurrenceUnit}s`}
-					name="recurrence"/>
+					name="recurrence"
+					required={true}
+				/>
 			</div>
 		</div>
 		<button type="submit" class="mx-auto my-2">Submit</button>
