@@ -1,21 +1,21 @@
-export const handle = async ({ resolve, event }) => {
-	// Apply CORS header for API routes
-	if (event.url.pathname.startsWith('/api')) {
-		// Required for CORS to work
-		if(event.request.method === 'OPTIONS') {
-			return new Response(null, {
-				headers: {
-					'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-					'Access-Control-Allow-Origin': '*',
-					'Access-Control-Allow-Headers': '*',
-				}
-			});
-		}
-	}
+import jwt from "jsonwebtoken";
+import {JWT_SECRET} from "$env/static/private";
+import {getUserById} from "$lib/db";
 
-	const response = await resolve(event);
-	if (event.url.pathname.startsWith('/api')) {
-		response.headers.append('Access-Control-Allow-Origin', `*`);
+export const handle = async ({event, resolve}) => {
+	const token = event.cookies.get('auth');
+	if (!token) return resolve(event);
+
+	try {
+		const data = jwt.verify(token, JWT_SECRET);
+		const user = getUserById(data.userId);
+		if (!user) {
+			event.cookies.delete('token', {path: '/'});
+			return resolve(event);
+		}
+		event.locals.user = user;
+	} catch (e) {
+		event.cookies.delete('token', {path: '/'});
 	}
-	return response;
+	return resolve(event);
 };

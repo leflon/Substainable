@@ -13,7 +13,7 @@
 	class="fixed w-full h-full top-0 left-0 flex justify-center items-center
 		backdrop-blur-xl bg-black/40">
 	<form
-		action="/api/subscription/add"
+		action="/api/subscriptions/add"
 		method="POST"
 		class="overflow-hidden px-3 w-full h-full box-border bg-white
 		lg:w-230 lg:h-128 lg:rounded-lg lg:shadow-lg"
@@ -30,7 +30,9 @@
 			{#if provider === '_CUSTOM'}
 				<div class="input-container">
 					<div class="input-label"> Provider name</div>
-					<TextInput type="text" name="name" placeholder="A great company"/>
+					<TextInput type="text"
+					           name="provider-name"
+					           placeholder="A great company" />
 				</div>
 			{/if}
 			<div class="input-container">
@@ -47,7 +49,7 @@
 			<div class="input-container">
 				<div class="input-label">First payment</div>
 				<input
-					name="base_date" type="date"
+					name="base-date" type="date"
 					value={new Date().toISOString().substring(0, 10)}
 				/>
 			</div>
