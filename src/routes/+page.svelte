@@ -1,5 +1,1 @@
-<script>
-	import AuthForm from '../components/AuthForm.svelte';
-
-</script>
-<AuthForm></AuthForm>
+<h1>Sub'stainable</h1>

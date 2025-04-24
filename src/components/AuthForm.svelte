@@ -1,9 +1,20 @@
 <script>
-	let selectedTab = $state('register');
+	let props = $props();
+
+	let selectedTab = $state(props.registerError ? 'register' : 'login');
 
 	let emailValue = $state('');
 	let passwordValue = $state('');
 	let confirmPasswordValue = $state('');
+
+	let errors= {
+		'invalid_credentials': 'Invalid credentials',
+		'missing_fields': 'Please fill in all fields',
+		'email_taken': 'This email is already used by another account'
+	};
+
+	let loginError = $derived(props.loginError && errors[props.loginError]);
+	let registerError = $derived(props.registerError && errors[props.registerError]);
 
 	const passwordRequirements = [
 		{
@@ -51,14 +62,17 @@
 			data-selected={selectedTab}>
 		</div>
 	</div>
-	<form action="/api/auth/login" method="GET" data-tab='login'>
+	<form action="/api/login" method="POST" data-tab='login'>
 		<h1>Welcome back!</h1>
+		{#if loginError}
+			<div class="form-error">{loginError}</div>
+		{/if}
 		<div class="input-container">
-			<input name='email' type="text" placeholder=" "  />
+			<input name='email' type="text" placeholder=" " required />
 			<div class="input-placeholder">E-mail</div>
 		</div>
 		<div class="input-container">
-			<input name='password' type="password" placeholder=" "/>
+			<input name='password' type="password" placeholder=" " required />
 			<div class="input-placeholder">Password</div>
 		</div>
 		<div class="form-footer">
@@ -70,15 +84,18 @@
 			<button type="submit">Login</button>
 		</div>
 	</form>
-	<form action="/api/auth/register" method="POST" data-tab="register">
+	<form action="/api/register" method="POST" data-tab="register">
 		<h1>Welcome to the family!</h1>
+		{#if registerError}
+			<div class="form-error">{registerError}</div>
+		{/if}
 		<div class="input-container">
-			<input type="text" name="email" placeholder=" " bind:value={emailValue} data-valid={emailValid}/>
+			<input type="text" name="email" placeholder=" " bind:value={emailValue} data-valid={emailValid} required />
 			<div class="input-placeholder">E-mail</div>
 		</div>
 		<div class="input-container">
 			<input type="password" name="password" placeholder=" "
-			       bind:value={passwordValue} data-valid={passwordValid}/>
+			       bind:value={passwordValue} data-valid={passwordValid} required />
 			<div class="input-placeholder">Password</div>
 		</div>
 		<div class="input-container">
@@ -142,6 +159,9 @@
 		@apply font-bold text-2xl text-center my-4;
 	}
 
+	.form-error {
+		@apply text-red-500 text-center bg-red-100 py-2 rounded-lg;
+	}
 	.input-container {
 		@apply relative w-full mx-auto my-4;
 	}
