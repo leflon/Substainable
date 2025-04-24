@@ -7,7 +7,6 @@
 		class: className,
 		value = $bindable('')
 	} = $props();
-	console.log(className);
 </script>
 
 <div class={"relative my-2 h-8 w-[max-content] " + className}>
