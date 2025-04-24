@@ -1,5 +1,5 @@
-import {json, redirect} from "@sveltejs/kit";
-import {addUser} from "$lib/db.js";
+import {redirect} from "@sveltejs/kit";
+import {addUser, getUserByEmail} from "$lib/db.js";
 import jwt from "jsonwebtoken";
 import {JWT_MAX_DAYS, JWT_SECRET} from "$env/static/private";
 
@@ -10,7 +10,12 @@ export const POST = async ({request, cookies}) => {
 	const password = data.get('password');
 
 	if (!email || !password)
-		return redirect(303,'/auth?error');
+		return redirect(303,'/auth?register_error=missing_fields');
+
+	const user = getUserByEmail(email);
+
+	if (user)
+		return redirect(303,'/auth?register_error=email_taken');
 
 	const userId = addUser(email, password);
 

@@ -1,4 +1,4 @@
-import {json, redirect} from "@sveltejs/kit";
+import {redirect} from "@sveltejs/kit";
 import jwt from "jsonwebtoken";
 import {JWT_MAX_DAYS, JWT_SECRET} from "$env/static/private";
 import {getUserByEmail} from "$lib/db.js";
@@ -10,17 +10,17 @@ export const POST = async ({request, cookies}) => {
 	const password = data.get('password');
 
 	if (!email || !password)
-		return redirect(303,'/auth?error');
+		return redirect(303,'/auth?login_error=missing_fields');
 
 	const user = getUserByEmail(email);
 
 	if (!user)
-		return redirect(303,'/auth?error');
+		return redirect(303,'/auth?login_error=invalid_credentials');
 
 	const validPassword = bcrypt.compareSync(password, user.password_hash);
 
 	if (!validPassword)
-		return redirect(303,'/auth?error');
+		return redirect(303,'/auth?login_error=invalid_credentials');
 
 	const {id: userId} = user;
 

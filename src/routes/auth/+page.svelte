@@ -1,5 +1,7 @@
 <script>
 	import AuthForm from "../../components/AuthForm.svelte";
+
+	let {data} = $props()
 </script>
 
-<AuthForm />
+<AuthForm loginError={data.loginError} registerError={data.registerError}/>
