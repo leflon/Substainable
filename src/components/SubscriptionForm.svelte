@@ -1,12 +1,25 @@
 <script>
 	import TextInput from "./TextInput.svelte";
 	import ProviderSelector from "./ProviderSelector.svelte";
+	import {onMount} from "svelte";
 
 	let provider = $state('');
+	let emissions = $state(null);
+	let providers = $state([]);
 	let recurrenceUnit = $state('month');
+
+	onMount(async () => {
+		let res = await fetch('/api/providers/getAll');
+		res = await res.json();
+		providers = [...res.providers, {
+			id: '_CUSTOM', name: 'Custom', logo_url:
+				'/icons/add.png'
+		}];
+	});
+
 	$effect(() => {
-		//TODO: fetch CO2 emissions from API when provider is selected
-	})
+		emissions = providers.find(p => p.id === provider)?.carbon_footprint;
+	});
 
 	function handleSubmit(event) {
 		if (provider === '') {
@@ -32,7 +45,7 @@
 			<div class="input-container">
 				<div class="input-label">Provider</div>
 				<div class="my-2">
-					<ProviderSelector bind:value={provider}/>
+					<ProviderSelector bind:value={provider} providers={providers} />
 				</div>
 			</div>
 			{#if provider === '_CUSTOM'}
@@ -47,7 +60,11 @@
 			{/if}
 			<div class="input-container">
 				<div class="input-label">CO2 emissions</div>
-				<TextInput type="number" name="emissions" placeholder="(kg CO₂e)" required={true} />
+				<TextInput type="number"
+				           name="emissions"
+				           placeholder="(kg CO₂e)"
+				           value={emissions}
+				           required={true}/>
 			</div>
 			<div class="input-container">
 				<div class="input-label">Price</div>

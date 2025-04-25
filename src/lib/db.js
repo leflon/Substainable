@@ -24,6 +24,10 @@ export function getUserByEmail(email) {
 	return getUserByEmailQuery.get(email);
 }
 
+const getProvidersQuery = db.query(`SELECT * FROM SubscriptionProvider WHERE is_custom = 0`);
+export function getProviders(userId) {
+	return getProvidersQuery.all(userId);
+}
 
 const addProviderQuery = db.query(`INSERT INTO SubscriptionProvider(id, name, is_custom, created_by, carbon_footprint) VALUES (?, ?, 1, ?, ?)`);
 export function addProvider(name, carbonFootprint, userId) {

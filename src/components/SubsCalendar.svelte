@@ -47,23 +47,25 @@
 					</div>
 				{/if}
 			</div>
-			<div class="grid grid-cols-2 grid-rows-2">
+			<div class="flex flex-row flex-wrap justify-center items-center gap-px">
 				{#each subs.slice(0, 3) as i}
-					{#if i.logo}
-						<img src={i.logo} class="object-fit-contain place-self-center"
+					<div class="relative w-3 h-3 sm:w-6 sm:h-6">
+					{#if i.logo_url}
+						<img src={i.logo_url} class="w-full h-full object-fit-contain"
 						     alt={i.name}/>
 					{:else}
 						<div
-							class="text-[7pt] font-bold text-center bg-green-300
+							class="overflow-hidden text-[7pt] w-full h-full font-bold text-center bg-green-300
 							flex items-center justify-center sm:text-sm">
 							{i.name[0].toUpperCase()}
 						</div>
 					{/if}
+					</div>
 				{/each}
 				{#if subs.length > 3}
 					<div
-						class="text-[7pt] place-self-center-safe overflow-hidden
-									sm:text-sm"
+						class="text-[7pt] w-3 h-3 overflow-hidden
+									sm:text-sm sm:w-6 sm:h-6"
 					>
 						+{subs.length - 3}
 					</div>
@@ -80,6 +82,6 @@
 	.container {
 		@apply grid gap-2 mx-auto max-w-150 px-2;
 		grid-template-columns: repeat(7, 1fr);
-		grid-template-rows: auto repeat(6, 60px);
+		grid-template-rows: auto repeat(6, 80px);
 	}
 </style>
