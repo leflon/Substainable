@@ -41,6 +41,23 @@
 		return dict;
 	});
 
+	let totalExpenses = $derived(
+		Object.values(currentMonthSubscriptions)
+			.reduce((acc, val) =>
+					acc + val.reduce((acc2, val2) => acc2 + val2.price, 0),
+				0
+			)
+	);
+
+	let totalEmissions =
+		$derived(
+			Object.values(currentMonthSubscriptions)
+				.reduce((acc, val) =>
+						acc + val.reduce((acc2, val2) => acc2 + val2.carbon_footprint, 0),
+					0
+				)
+		);
+
 	const incrementMonth = () => {
 		if (currentMonth === 11) {
 			currentMonth = 0;
@@ -55,11 +72,23 @@
 	}
 </script>
 
-<h1>Sub'stainable</h1>
-<h2>{monthNames[currentMonth]} {currentYear}</h2>
+<h1 class="text-center">Sub'stainable</h1>
+<h2 class="text-center">{monthNames[currentMonth]} {currentYear}</h2>
+<div class="grid grid-rows-2 my-6 mx-auto sm:grid-cols-2 sm:grid-rows-1 sm:w-150 ">
+	<div class="text-center">
+		<h3>Your expenses this month</h3>
+		<div class="font-extrabold font-tile text-4xl">€{totalExpenses}</div>
+	</div>
+	<div class="text-center">
+		<h3>Your emissions this month</h3>
+		<div class="font-extrabold font-title text-4xl">{totalEmissions}kgCO2e</div>
+	</div>
+</div>
+<div class="flex gap-2 justify-center my-6">
 <button onclick={decrementMonth}> Prev</button>
 <button onclick={incrementMonth}> Next</button>
 <button onclick={() => isAdding = !isAdding}>Add subscription</button>
+</div>
 
 <SubsCalendar year={currentYear} month={currentMonth}
               subscriptions={currentMonthSubscriptions}/>
