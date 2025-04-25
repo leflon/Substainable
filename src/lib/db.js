@@ -44,7 +44,7 @@ const getUserSubsQuery = db.query(`SELECT * FROM Subscription s
 		                                     JOIN SubscriptionProvider p ON s.provider_id = p.id 
 																				 WHERE user_id = ?`);
 export function getUserSubscriptions(userId) {
-	return getUserSubsQuery.all(userId);
+	return getUserSubsQuery.all(userId).map(row => ({...row, baseDate: new Date(row.baseDate)}));
 }
 
 function editRow(table, id, edits) {
