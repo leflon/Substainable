@@ -1,24 +1,16 @@
 <script>
 	import TextInput from "./TextInput.svelte";
 	import ProviderSelector from "./ProviderSelector.svelte";
-	import {onMount} from "svelte";
+	import {providers} from "$lib/store.js";
+
+	let {onClose} = $props();
 
 	let provider = $state('');
 	let emissions = $state(null);
-	let providers = $state([]);
 	let recurrenceUnit = $state('month');
 
-	onMount(async () => {
-		let res = await fetch('/api/providers/getAll');
-		res = await res.json();
-		providers = [...res.providers, {
-			id: '_CUSTOM', name: 'Custom', logo_url:
-				'/icons/add.png'
-		}];
-	});
-
 	$effect(() => {
-		emissions = providers.find(p => p.id === provider)?.carbon_footprint;
+		emissions = $providers.find(p => p.id === provider)?.carbon_footprint;
 	});
 
 	function handleSubmit(event) {
@@ -30,22 +22,29 @@
 </script>
 
 <div
-	class="fixed w-full h-full top-0 left-0 flex justify-center items-center
+	class="z-100 fixed w-full h-full top-0 left-0 flex justify-center items-center
 		backdrop-blur-xl bg-black/40">
 	<form
 		action="/api/subscriptions/add"
 		method="POST"
-		class="overflow-hidden px-3 w-full h-full box-border bg-white
+		class="relative overflow-hidden px-3 w-full h-full box-border bg-white
 		lg:w-230 lg:h-128 lg:rounded-lg lg:shadow-lg"
 		onsubmit={handleSubmit}
 	>
+		<!--svelte-ignore a11y_no_static_element_interactions -->
+		<!--svelte-ignore a11y_click_events_have_key_events -->
+		<div
+			class="absolute top-1 right-1 cursor-pointer"
+			onclick={onClose}>
+			<img src="/icons/add.png" class="rotate-45" alt="+"/>
+		</div>
 		<h1 class="my-4 font-bold text-3xl text-center">Add subscription</h1>
 		<h2>Details</h2>
 		<div class="input-group">
 			<div class="input-container">
 				<div class="input-label">Provider</div>
 				<div class="my-2">
-					<ProviderSelector bind:value={provider} providers={providers} />
+					<ProviderSelector bind:value={provider} providers={providers}/>
 				</div>
 			</div>
 			{#if provider === '_CUSTOM'}

@@ -25,8 +25,8 @@ export function getUserByEmail(email) {
 }
 
 const getProvidersQuery = db.query(`SELECT * FROM SubscriptionProvider WHERE is_custom = 0`);
-export function getProviders(userId) {
-	return getProvidersQuery.all(userId);
+export function getProviders() {
+	return getProvidersQuery.all();
 }
 
 const addProviderQuery = db.query(`INSERT INTO SubscriptionProvider(id, name, is_custom, created_by, carbon_footprint) VALUES (?, ?, 1, ?, ?)`);
@@ -44,11 +44,17 @@ export function addSubscription(providerId, userId, price, baseDate, recurrenceU
 	return id;
 }
 
-const getUserSubsQuery = db.query(`SELECT * FROM Subscription s 
-		                                     JOIN SubscriptionProvider p ON s.provider_id = p.id 
+const getUserSubsQuery = db.query(`SELECT s.*, p.id as provider_id, p.name, p.carbon_footprint, p.is_custom, p.logo_url 
+                                   FROM Subscription s 
+		                                     LEFT JOIN SubscriptionProvider p ON s.provider_id = p.id 
 																				 WHERE user_id = ?`);
 export function getUserSubscriptions(userId) {
 	return getUserSubsQuery.all(userId).map(row => ({...row, baseDate: new Date(row.baseDate)}));
+}
+
+const getSubQuery = db.query(`SELECT * FROM Subscription WHERE id = ?`);
+export function getSubscriptionById(id) {
+	return getSubQuery.get(id);
 }
 
 function editRow(table, id, edits) {
@@ -61,6 +67,8 @@ function editRow(table, id, edits) {
 	queryText = queryText.slice(0, -2);
 	queryText += ` WHERE id = ?`;
 	queryArgs.push(id);
+	db.query(queryText).run(...queryArgs);
+
 }
 
 export function editSubscription(id, edits) {
@@ -69,4 +77,10 @@ export function editSubscription(id, edits) {
 
 export function editProvider(id, edits) {
 	editRow('SubscriptionProvider', id, edits);
+}
+
+
+const deleteSubQuery = db.query(`DELETE FROM Subscription WHERE id = ?`);
+export function deleteSubscription(id) {
+	deleteSubQuery.run(id);
 }
