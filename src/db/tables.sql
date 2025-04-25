@@ -33,8 +33,8 @@ CREATE TABLE Subscription(
     -- to the user to enter the price of the subscription.
     price REAL,
     baseDate INTEGER, -- Stored as UNIX timestamp
-    reccurence_unit TEXT, -- per week, per month, per year, etc. 
-    reccurence INTEGER, -- e.g. 1 for weekly/monthly/yearly, 2 for every 2
+    recurrence_unit TEXT, -- per week, per month, per year, etc.
+    recurrence INTEGER, -- e.g. 1 for weekly/monthly/yearly, 2 for every 2
     -- weeks/2 months/2 years, etc.
 
     FOREIGN KEY (provider_id) REFERENCES SubscriptionProvider(id),

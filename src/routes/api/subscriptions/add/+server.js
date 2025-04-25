@@ -5,7 +5,7 @@ export const POST = async ({request, locals}) => {
 	const data = await request.formData();
 	const user = locals.user;
 	if (!user)
-		return fail(401, 'Unauthorized');
+		return json({error: 'Unauthorized'}, {status: 401});
 
 	let providerId = data.get('provider-id');
 	if (providerId === '_CUSTOM') {
