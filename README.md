@@ -1,38 +1,87 @@
-# sv
+# Sub'stainable
+## Eco-friendly subscription manager
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+**Sub'stainable** is an eco-friendly tool that allows you to track each of your
+subscriptions, giving you a clear idea of how much you pay each month, while 
+offering you insights on your carbon footprint.
 
-## Creating a project
+## Installation
+This tool was made with **Svelte 5** (sveltekit) and **SQLite**, using the
+**Bun** runtime
 
-If you're seeing this, you've probably already done this step. Congrats!
-
+### Installing Bun
+#### Linux & macOs
+```bash 
+curl -fsSL https://bun.sh/install | bash
+```
+#### Windows
 ```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
+powershell -c "irm bun.sh/install.ps1 | iex"
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
+#### Cloning the repository
+#### Using git
 ```bash
-npm run dev
+git clone https://github.com/leflon/TI616I-Project.git
+```
+#### Using the GitHub CLI
+```bash
+gh repo clone leflon/TI616I-Project
+```
+### Installing dependencies
+```bash 
+bun install
+```
+### Setting up the database
+You can find database **schemas** and **base data** in `src/db`. Use these files
+to populate your database: 
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+**WARNING: This will wipe all data from your Sub'stainable database. if you 
+already hade one before running this command.**
+```bash 
+sqlite3 db.sqlite < src/sb/tables.sql
+```
+```bash 
+sqlite3 db.sqlite < src/sb/providers.sql
 ```
 
-## Building
+### Setting env variables
+This projects uses `jsonwebtoken` to keep track of auth sessions. This 
+Related settings are set in environment variables. You can find these in `.
+env.example`. Simply rename this file `.env` and fill in the values to make 
+it work.
 
-To create a production version of your app:
-
+### Start the dev environment
+You can start the dev envinroment
 ```bash
-npm run build
+bun run dev
 ```
+**Make you use this command. Using `vite dev` will use Node.js instead of 
+Bun, which is not supported since our project relies on the `bun:sqlite` 
+module.**
 
-You can preview the production build with `npm run preview`.
+If you need to run `vite` commands, you can do it like so:  `bun --bun vite`,
+ensuring that the `bun` runtime is used.
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+
+### Deployment
+After installing the project, you can deploy it using any platform you like, as long as it supports Bun.
+
+#### Building the app
+```bash
+bun run build
+```
+(Do not use `bun build`, it is an unrelated command)
+
+#### Running the project
+```bash
+[PORT=your_prefered_port] bun build/index.js
+```
+You can also use a process manager like `pm2`.
+
+
+## Authors
+ - Adèle Chamoux
+ - Mattéo Launay
+ - Paul Leflon
+ - Iriantsoa Rasoloarivalona

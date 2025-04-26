@@ -22,10 +22,7 @@ export const POST = async ({request, cookies}) => {
 	if (!validPassword)
 		return redirect(303,'/auth?login_error=invalid_credentials');
 
-	console.log('valid');
-
 	const {id: userId} = user;
-
 	const token = jwt.sign({userId}, JWT_SECRET, {
 		expiresIn: JWT_MAX_DAYS + 'd'
 	});
@@ -37,8 +34,5 @@ export const POST = async ({request, cookies}) => {
 		secure: false,
 		path: '/'
 	});
-
-	console.log('token set');
-
 	return redirect(303, '/');
 }
