@@ -2,22 +2,21 @@
 
 
 @theme {
-	/* TODO: Add better fonts */
-	--font-title: 'Arial', sans-serif;
-	--font-body: 'Arial', sans-serif;
-	--font-figures: monospace;
+	--font-title: 'Geologica', sans-serif;
+	--font-body: 'Roboto Flex', sans-serif;
 }
 
 html, body {
 	margin: 0;
 	height: 100%;
+	@apply font-body;
 }
 
 h1, h2, h3, h4, h5, h6 {
 	@apply font-title;
 }
 button {
-	@apply flex items-center justify-center px-4 py-1 rounded-sm bg-blue-400
+	@apply font-semibold font-body flex items-center justify-center px-4 py-1 rounded-sm bg-blue-400
 	text-white text-lg transition-all duration-200 cursor-pointer;
 }
 button[disabled] {

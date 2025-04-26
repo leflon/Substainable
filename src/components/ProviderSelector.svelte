@@ -1,5 +1,7 @@
 <script>
-	let {value = $bindable(''), providers} = $props();
+	import {providers} from "$lib/store.js";
+
+	let {value = $bindable('')} = $props();
 	let isOpen = $state(false);
 </script>
 
@@ -14,7 +16,7 @@
 	<input type="hidden" name="provider-id" bind:value={value}/>
 	<div class="h-7 flex flex-row items-center gap-1">
 		{#if value}
-			{@const provider = providers.find(p => p.id === value)}
+			{@const provider = $providers.find(p => p.id === value)}
 			<div class="provider-item">
 				<img src={provider.logo_url}
 				     width="24" height="24"
@@ -34,7 +36,7 @@
 	<div
 		class="list h-32 overflow-y-scroll absolute z-50 bg-white w-full
 		left-0 translate-y-1 border-2 border-black overflow-hidden px-2 rounded-sm">
-		{#each providers as provider (provider.id)}
+		{#each $providers as provider (provider.id)}
 			{#if provider.id !== value}
 				<div class="provider-item"
 				        onclick={() => value = provider.id}

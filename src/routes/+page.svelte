@@ -4,8 +4,8 @@
 	import {providers, subscriptions} from "$lib/store.js";
 
 	let {data} = $props();
-	providers.set(data.providers);
-	subscriptions.set([...data.subscriptions, {id: '_CUSTOM', name: 'Custom', logo_url: '/icons/add.png'}]);
+	providers.set([{id: '_CUSTOM', name: 'Custom', logo_url: '/icons/add.png'}, ...data.providers]);
+	subscriptions.set(data.subscriptions);
 
 	let showSubManager = $state(false); // Only applies on smaller viewports.
 
@@ -31,7 +31,7 @@
 				const baseYear = base.getFullYear();
 				if (
 					(currentYear - baseYear) % r === 0 &&
-					currentMonth[0] === base.getMonth()
+					currentMonth === base.getMonth()
 				) {
 					dict[date] = [...(dict[date] || []), s];
 				}
@@ -79,7 +79,7 @@
 	<div
 		class="relative w-2/5 max-w-128 h-full *:h-full"
 		data-hidden={!showSubManager}
-		>
+	>
 		<SubscriptionList onClose={() => showSubManager = false}></SubscriptionList>
 	</div>
 	<div class="flex flex-col items-center flex-1">

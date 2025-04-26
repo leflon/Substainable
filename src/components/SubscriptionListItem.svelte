@@ -6,6 +6,16 @@
 		onEdit
 	} = $props();
 
+
+	const date =
+		$derived(new Intl.DateTimeFormat('fr-FR').format(subscription.baseDate));
+
+	const subphrase = $derived(
+		`Every ${subscription.recurrence > 1 ? subscription.recurrence : ''}` +
+		` ${subscription.recurrence_unit}${subscription.recurrence > 1 ? 's' : ''}` +
+		` since ${date}`
+	);
+
 	const deleteSub = async () => {
 		if (!confirm('Are you sure?')) return;
 		const res = await fetch(`/api/subscriptions/delete/${subscription.id}`);
@@ -37,6 +47,9 @@
 	</div>
 	<div class="*:my-1">
 		<div class="font-bold font-title text-2xl">{subscription.name}</div>
+		<div class="text-gray-500 text-sm">
+			{subphrase}
+		</div>
 		<div class="flex gap-2">
 			<div>€{subscription.price}</div>
 			<div>•</div>
