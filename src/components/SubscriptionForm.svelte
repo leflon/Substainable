@@ -73,13 +73,22 @@
 				<div class="input-label">CO2 emissions</div>
 				<TextInput type="number"
 				           name="emissions"
+				           step="0.01"
+				           min={0}
 				           placeholder="(kg CO₂e)"
 				           value={emissions}
 				           required={true}/>
 			</div>
 			<div class="input-container">
 				<div class="input-label">Price</div>
-				<TextInput type="number" name="price" placeholder="(€)" required={true}/>
+				<TextInput
+					type="number"
+					step="0.01"
+					name="price"
+					min={0}
+					placeholder="(€)"
+					required={true}
+				/>
 			</div>
 		</div>
 		<h2>Timing</h2>
@@ -99,7 +108,6 @@
 					name="recurrence-unit"
 					required
 				>
-					<option value="week">Week</option>
 					<option value="month" selected>Month</option>
 					<option value="year">Year</option>
 				</select>
@@ -107,8 +115,10 @@
 			<div class="input-container">
 				<div class="input-label">Interval</div>
 				<TextInput
+					type="number"
 					placeholder={`Every # ${recurrenceUnit}s`}
 					name="recurrence"
+					min={1}
 					required={true}
 				/>
 			</div>

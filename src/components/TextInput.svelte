@@ -3,6 +3,8 @@
 		type = 'text',
 		name = '',
 		placeholder = '',
+		step,
+		min,
 		invalid = false,
 		class: className,
 		required = false,
@@ -16,6 +18,8 @@
 		name={name}
 		placeholder=" "
 		required={required}
+		step={step}
+		min={min}
 		class="h-full w-full px-2 py-2 border-2 border-gray-200 rounded-sm
 		outline-none transition-all duration-300 focus:border-blue-400"
 		data-invalid={invalid}
