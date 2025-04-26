@@ -1,8 +1,11 @@
 import {addProvider, addSubscription, getSubscriptionById} from "$lib/db.js";
-import {fail, json} from "@sveltejs/kit";
+import {json} from "@sveltejs/kit";
 
-export const POST = async ({request, locals}) => {
-	const data = await request.formData();
+/* This should be a POST request but our production server, for some reason,
+has issues dealing with these. As a hot fix, we're converting them to GET */
+export const GET = async ({request, locals, url}) => {
+	//const data = await request.formData();
+	const data = url.searchParams;
 	const user = locals.user;
 	if (!user)
 		return json({error: 'Unauthorized'}, {status: 401});
@@ -11,7 +14,7 @@ export const POST = async ({request, locals}) => {
 	if (providerId === '_CUSTOM') {
 		const providerName = data.get('provider-name');
 		const emissions = data.get('emissions');
-		providerId =	addProvider(providerName, emissions, user.id);
+		providerId = addProvider(providerName, emissions, user.id);
 	}
 
 	const date = new Date(data.get('base-date'));

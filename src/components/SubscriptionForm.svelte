@@ -25,10 +25,8 @@
 		event.preventDefault();
 
 		const formData = new FormData(event.target);
-		let res = await fetch('/api/subscriptions/add', {
-			method: 'POST',
-			body: formData
-		});
+		let res = await fetch('/api/subscriptions/add?'
+			+ new URLSearchParams(formData).toString());
 		res = await res.json();
 		subscriptions.update(subs => [...subs, res.subscription]);
 		onClose();

@@ -66,7 +66,7 @@
 			data-selected={selectedTab}>
 		</div>
 	</div>
-	<form action="/api/login" method="POST" data-tab='login'>
+	<form action="/api/login" method="GET" data-tab='login'>
 		<h1>Welcome back!</h1>
 		{#if loginError}
 			<div class="form-error">{loginError}</div>
@@ -93,7 +93,7 @@
 			<button type="submit">Login</button>
 		</div>
 	</form>
-	<form action="/api/register" method="POST" data-tab="register">
+	<form action="/api/register" method="GET" data-tab="register">
 		<h1>Welcome to the family!</h1>
 		{#if registerError}
 			<div class="form-error">{registerError}</div>

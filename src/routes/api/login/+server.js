@@ -4,8 +4,13 @@ import {JWT_MAX_DAYS, JWT_SECRET} from "$env/static/private";
 import {getUserByEmail} from "$lib/db.js";
 import bcrypt from "bcrypt";
 
-export const POST = async ({request, cookies}) => {
-	const data = await request.formData();
+
+
+/* This should be a POST request but our production server, for some reason,
+has issues dealing with these. As a hot fix, we're converting them to GET */
+export const GET = async ({request, cookies, url}) => {
+	//const data = await request.formData();
+	const data = url.searchParams;
 	const email = data.get('email');
 	const password = data.get('password');
 
