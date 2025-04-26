@@ -1,4 +1,4 @@
-import {addProvider, addSubscription} from "$lib/db.js";
+import {addProvider, addSubscription, getSubscriptionById} from "$lib/db.js";
 import {fail, json} from "@sveltejs/kit";
 
 export const POST = async ({request, locals}) => {
@@ -16,6 +16,7 @@ export const POST = async ({request, locals}) => {
 
 	const date = new Date(data.get('base-date'));
 	const subId = addSubscription(providerId, user.id, data.get('price'), date.getTime(), data.get('recurrence-unit'), data.get('recurrence'));
+	const subscription = getSubscriptionById(subId)
 
-	return json({subId});
+	return json({subscription});
 }

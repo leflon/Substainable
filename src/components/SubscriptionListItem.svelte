@@ -29,25 +29,30 @@
 </script>
 
 <div
-	class="flex gap-2 rounded-xl p-1 shadow-md"
+	class="relative flex gap-2 rounded-xl p-1 shadow-md items-center"
 	data-id={subscription.id}
 >
+	<!--svelte-ignore a11y_no_static_element_interactions -->
+	<!--svelte-ignore a11y_click_events_have_key_events -->
+	<div class="absolute top-2 right-2 cursor-pointer" onclick={deleteSub} type="button">
+		<img src="/icons/delete.png" alt="delete" width={22} />
+	</div>
 	<div
 		class="w-24 h-24 *:w-full *:h-full
-		bg-green-400 overflow-hidden rounded-lg"
+		overflow-hidden rounded-lg"
 	>
 		{#if subscription.logo_url}
 			<img src={subscription.logo_url} alt={subscription.name}/>
 		{:else}
 			<div
-				class="text-4xl font-bold flex justify-center items-center">
+				class="bg-green-400 text-4xl font-bold flex justify-center items-center">
 				{subscription.name[0].toUpperCase()}
 			</div>
 		{/if}
 	</div>
-	<div class="*:my-1">
+	<div class="h-full">
 		<div class="font-bold font-title text-2xl">{subscription.name}</div>
-		<div class="text-gray-500 text-sm">
+		<div class="text-gray-500 text-xs lg:text-sm">
 			{subphrase}
 		</div>
 		<div class="flex gap-2">
@@ -59,13 +64,6 @@
 			class="flex flex-row gap-2
 				*:underline *:cursor-pointer *:hover:no-underline"
 		>
-			<!--svelte-ignore a11y_no_static_element_interactions -->
-			<!--svelte-ignore a11y_click_events_have_key_events -->
-			<div onclick={() => alert('Not yet implemented')}>Edit</div>
-			<div class="no-underline!">•</div>
-			<!--svelte-ignore a11y_no_static_element_interactions -->
-			<!--svelte-ignore a11y_click_events_have_key_events -->
-			<div class="text-red-500" onclick={deleteSub} type="button">Delete</div>
 		</div>
 	</div>
 </div>

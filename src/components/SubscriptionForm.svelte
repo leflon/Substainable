@@ -1,7 +1,7 @@
 <script>
 	import TextInput from "./TextInput.svelte";
 	import ProviderSelector from "./ProviderSelector.svelte";
-	import {providers} from "$lib/store.js";
+	import {providers, subscriptions} from "$lib/store.js";
 
 	let {onClose} = $props();
 
@@ -9,15 +9,29 @@
 	let emissions = $state(null);
 	let recurrenceUnit = $state('month');
 
+	let form = $state();
+
 	$effect(() => {
 		emissions = $providers.find(p => p.id === provider)?.carbon_footprint;
 	});
 
-	function handleSubmit(event) {
+	async function handleSubmit(event) {
+		event.preventDefault();
 		if (provider === '') {
-			event.preventDefault();
 			alert('Please select a provider');
+			return;
 		}
+
+		event.preventDefault();
+
+		const formData = new FormData(event.target);
+		let res = await fetch('/api/subscriptions/add', {
+			method: 'POST',
+			body: formData
+		});
+		res = await res.json();
+		subscriptions.update(subs => [...subs, res.subscription]);
+		onClose();
 	}
 </script>
 
@@ -25,8 +39,6 @@
 	class="z-100 fixed w-full h-full top-0 left-0 flex justify-center items-center
 		backdrop-blur-xl bg-black/40">
 	<form
-		action="/api/subscriptions/add"
-		method="POST"
 		class="relative overflow-hidden px-3 w-full h-full box-border bg-white
 		lg:w-230 lg:h-128 lg:rounded-lg lg:shadow-lg"
 		onsubmit={handleSubmit}

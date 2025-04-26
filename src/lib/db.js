@@ -46,13 +46,16 @@ export function addSubscription(providerId, userId, price, baseDate, recurrenceU
 
 const getUserSubsQuery = db.query(`SELECT s.*, p.id as provider_id, p.name, p.carbon_footprint, p.is_custom, p.logo_url 
                                    FROM Subscription s 
-		                                     LEFT JOIN SubscriptionProvider p ON s.provider_id = p.id 
+		                                     JOIN SubscriptionProvider p ON s.provider_id = p.id 
 																				 WHERE user_id = ?`);
 export function getUserSubscriptions(userId) {
 	return getUserSubsQuery.all(userId).map(row => ({...row, baseDate: new Date(row.baseDate)}));
 }
 
-const getSubQuery = db.query(`SELECT * FROM Subscription WHERE id = ?`);
+const getSubQuery = db.query(`SELECT s.*, p.id as provider_id, p.name, p.carbon_footprint, p.is_custom, p.logo_url 
+                                   FROM Subscription s 
+		                                     JOIN SubscriptionProvider p ON s.provider_id = p.id 
+																				 WHERE s.id = ?`);
 export function getSubscriptionById(id) {
 	return getSubQuery.get(id);
 }

@@ -83,25 +83,32 @@
 		<SubscriptionList onClose={() => showSubManager = false}></SubscriptionList>
 	</div>
 	<div class="flex flex-col items-center flex-1">
-		<h1 class="text-center">Sub'stainable</h1>
-		<h2 class="text-center">{monthNames[currentMonth]} {currentYear}</h2>
-		<div class="grid grid-rows-2 my-6 mx-auto sm:grid-cols-2 sm:grid-rows-1 sm:w-150 ">
+		<h1 class="text-green-500 font-extrabold text-4xl lg:text-6xl text-center my-6">Sub'stainable</h1>
+		<div class="month flex gap-2 items-center">
+			<button onclick={decrementMonth}>
+				<img src="/icons/drop_down.png" alt="<" class="rotate-90"/>
+			</button>
+			<div class="font-tile font-bold text-3xl text-center">{monthNames[currentMonth]} {currentYear}</div>
+			<button onclick={incrementMonth}>
+				<img src="/icons/drop_down.png" alt=">" class="rotate-270"/>
+			</button>
+		</div>
+		<div class="grid mt-6 mx-auto gap-6 grid-cols-2 grid-rows-1 max-w-150 ">
 			<div class="text-center">
-				<h3>Your expenses this month</h3>
-				<div class="font-extrabold font-tile text-4xl">€{totalExpenses}</div>
+				<h3 class="text-xs sm:text-lg">Your expenses this month</h3>
+				<div class="font-extrabold font-tile text-2xl sm:text-4xl">€{totalExpenses}</div>
 			</div>
 			<div class="text-center">
-				<h3>Your emissions this month</h3>
-				<div class="font-extrabold font-title text-4xl">{totalEmissions}kgCO2e</div>
+				<h3 class="text-xs sm:text-lg">Your emissions this month</h3>
+				<div class="font-extrabold font-title text-2xl sm:text-4xl">{totalEmissions}kgCO2e</div>
 			</div>
 		</div>
 		<div class="flex gap-2 justify-center my-6">
-			<button onclick={decrementMonth}> Prev</button>
 			<button
 				class="lg:hidden!"
 				onclick={() => showSubManager = true}>
-				Manage subscriptions {showSubManager}</button>
-			<button onclick={incrementMonth}> Next</button>
+				Manage subscriptions
+			</button>
 		</div>
 
 		<SubsCalendar year={currentYear} month={currentMonth}
@@ -115,5 +122,9 @@
 
 	[data-hidden='true'] {
 		@apply max-lg:hidden;
+	}
+
+	.month button {
+		@apply bg-transparent size-8 border-2 border-black rounded-full p-0;
 	}
 </style>
