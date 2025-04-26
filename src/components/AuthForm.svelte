@@ -1,4 +1,6 @@
 <script>
+	import TextInput from "./TextInput.svelte";
+
 	let props = $props();
 
 	let selectedTab = $state(props.registerError ? 'register' : 'login');
@@ -7,11 +9,13 @@
 	let passwordValue = $state('');
 	let confirmPasswordValue = $state('');
 
-	let errors= {
+	let errors = {
 		'invalid_credentials': 'Invalid credentials',
 		'missing_fields': 'Please fill in all fields',
 		'email_taken': 'This email is already used by another account'
 	};
+
+	const inputClass = 'w-full';
 
 	let loginError = $derived(props.loginError && errors[props.loginError]);
 	let registerError = $derived(props.registerError && errors[props.registerError]);
@@ -52,7 +56,7 @@
 	class="fixed w-full h-full overflow-hidden
 		md:w-128 md:h-128 md:border-2 md:border-gray-200 md:rounded-lg md:shadow-md
 		shadow-gray-200 md:top-1/2 md:left-1/2 md:transform-[translate(-50%,-50%)]"
-     data-selected={selectedTab}
+	data-selected={selectedTab}
 >
 	<div class="relative flex h-16 border-b-2 border-b-gray-100">
 		<button class="form-tab" onclick={() => selectedTab = 'login'}>Login</button>
@@ -67,17 +71,22 @@
 		{#if loginError}
 			<div class="form-error">{loginError}</div>
 		{/if}
-		<div class="input-container">
-			<input name='email' type="text" placeholder=" " required />
-			<div class="input-placeholder">E-mail</div>
-		</div>
-		<div class="input-container">
-			<input name='password' type="password" placeholder=" " required />
-			<div class="input-placeholder">Password</div>
-		</div>
+		<TextInput
+			class={inputClass}
+			name="email"
+			type="text"
+			placeholder="E-mail"
+			required={true}/>
+		<TextInput
+			class={inputClass}
+			name="password"
+			type="password"
+			placeholder="Password"
+			required={true}/>
 		<div class="form-footer">
 			<a
 				href="#"
+				onclick={() => alert('Good luck')}
 				class="text-xs hover:underline">
 				I forgot my password
 			</a>
@@ -89,20 +98,30 @@
 		{#if registerError}
 			<div class="form-error">{registerError}</div>
 		{/if}
-		<div class="input-container">
-			<input type="text" name="email" placeholder=" " bind:value={emailValue} data-valid={emailValid} required />
-			<div class="input-placeholder">E-mail</div>
-		</div>
-		<div class="input-container">
-			<input type="password" name="password" placeholder=" "
-			       bind:value={passwordValue} data-valid={passwordValid} required />
-			<div class="input-placeholder">Password</div>
-		</div>
-		<div class="input-container">
-			<input type="password" name="" placeholder=" "
-			       bind:value={confirmPasswordValue} data-valid={passwordsMatch} />
-			<div class="input-placeholder">Confirm Password</div>
-		</div>
+		<TextInput
+			class={inputClass}
+			name="email"
+			type="text"
+			placeholder="E-mail"
+			invalid={!emailValid}
+			bind:value={emailValue}
+			required={true} />
+		<TextInput
+			class={inputClass}
+			name="password"
+			type="password"
+			placeholder="Password"
+			invalid={!passwordValid}
+			bind:value={passwordValue}
+			required={true} />
+		<TextInput
+			class={inputClass}
+			name=""
+			type="password"
+			placeholder="Confirm Password"
+			bind:value={confirmPasswordValue}
+			invalid={!passwordsMatch}
+			required={true} />
 		<div class="my-4">
 			{#each passwordRequirements as r}
 				<div class="text-sm text-red-500 transition-all duration-200"
@@ -124,7 +143,8 @@
 	@import 'tailwindcss';
 
 	.form-tab {
-		@apply h-full w-1/2 flex items-center justify-center text-xl cursor-pointer;
+		@apply h-full w-1/2 flex items-center justify-center text-xl
+		cursor-pointer bg-transparent text-black;
 	}
 
 	.indicator[data-selected='register'] {
@@ -162,6 +182,7 @@
 	.form-error {
 		@apply text-red-500 text-center bg-red-100 py-2 rounded-lg;
 	}
+
 	.input-container {
 		@apply relative w-full mx-auto my-4;
 	}
@@ -190,7 +211,6 @@
 	.form-footer {
 		@apply flex items-center justify-end gap-2;
 	}
-
 
 
 	input[data-valid='false'],

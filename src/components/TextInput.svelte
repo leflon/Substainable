@@ -45,7 +45,7 @@
 		@apply border-red-400;
 
 		& ~ .placeholder {
-			@apply text-red-400;
+			@apply text-red-400!;
 		}
 	}
 </style>

@@ -83,7 +83,8 @@
 		<SubscriptionList onClose={() => showSubManager = false}></SubscriptionList>
 	</div>
 	<div class="flex flex-col items-center flex-1">
-		<h1 class="text-green-500 font-extrabold text-4xl lg:text-6xl text-center my-6">Sub'stainable</h1>
+		<h1 class="text-green-500 font-extrabold text-4xl lg:text-6xl text-center mt-6">Sub'stainable</h1>
+		<a href="/api/logout" class="text-xs mb-3 hove:underline">Log out</a>
 		<div class="month flex gap-2 items-center">
 			<button onclick={decrementMonth}>
 				<img src="/icons/drop_down.png" alt="<" class="rotate-90"/>
