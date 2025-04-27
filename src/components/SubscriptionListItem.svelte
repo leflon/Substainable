@@ -56,9 +56,9 @@
 			{subphrase}
 		</div>
 		<div class="flex gap-2">
-			<div>€{subscription.price}</div>
+			<div>€{parseFloat(subscription.price.toFixed(2))}</div>
 			<div>•</div>
-			<div>{subscription.carbon_footprint}kgCO2e</div>
+			<div>{parseFloat(subscription.carbon_footprint.toFixed(2))}kgCO2e</div>
 		</div>
 		<div
 			class="flex flex-row gap-2

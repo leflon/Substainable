@@ -37,13 +37,14 @@
 		{@const price = subs.reduce((acc, i) => acc + i.price, 0)}
 		<div
 			class={"text-center bg-gray-100 rounded-sm px-1 py-[2px]"
-			+ (isOtherMonth ? ' opacity-25' : '')}>
-			<div class="flex flex-col items-center text-[7pt]
-				sm:text-sm sm:flex-row sm:justify-center sm:gap-2">
+			+ (isOtherMonth ? ' opacity-25' : '')} title={'€' + price}>
+			<div class="flex flex-col items-center text-[7pt] sm:gap-2
+				sm:text-sm sm:flex-row sm:justify-center">
 				<div>{day}</div>
 				{#if price > 0}
 					<div class="text-xs font-bold sm:text-sm">
-						€{price}
+
+						€{price >= 99 ? '99+' : parseFloat(price.toFixed(2))}
 					</div>
 				{/if}
 			</div>
@@ -81,7 +82,7 @@
 
 	.container {
 		@apply grid gap-2 mx-auto max-w-150 px-2;
-		grid-template-columns: repeat(7, 1fr);
+		grid-template-columns: repeat(7, minmax(0, 80px));
 		grid-template-rows: auto repeat(6, 80px);
 	}
 </style>
