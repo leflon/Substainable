@@ -60,30 +60,13 @@ export function getSubscriptionById(id) {
 	return getSubQuery.get(id);
 }
 
-function editRow(table, id, edits) {
-	let queryText = `UPDATE ${table} SET `;
-	const queryArgs = [];
-	for (const [k, v] of Object.entries(edits)) {
-		queryText += `${k} = ?, `;
-		queryArgs.push(v);
-	}
-	queryText = queryText.slice(0, -2);
-	queryText += ` WHERE id = ?`;
-	queryArgs.push(id);
-	db.query(queryText).run(...queryArgs);
-
-}
-
-export function editSubscription(id, edits) {
-	editRow('Subscription', id, edits);
-}
-
-export function editProvider(id, edits) {
-	editRow('SubscriptionProvider', id, edits);
-}
-
-
 const deleteSubQuery = db.query(`DELETE FROM Subscription WHERE id = ?`);
 export function deleteSubscription(id) {
 	deleteSubQuery.run(id);
+}
+
+
+const getProjectsQuery = db.query(`SELECT * FROM EcoProject`);
+export function getEcoProjects() {
+	return getProjectsQuery.all();
 }

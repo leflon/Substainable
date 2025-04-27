@@ -45,16 +45,6 @@ CREATE TABLE EcoProject(
     id TEXT,
     name TEXT NOT NULL,
     description TEXT NOT NULL,
-    organization_name TEXT NOT NULL,
+    image_url TEXT NOT NULL,
     link TEXT NOT NULL
-);
-
-CREATE TABLE Donation(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id TEXT NOT NULL,
-    project_id TEXT NOT NULL,
-    amount REAL NOT NULL,
-    donated_at INTEGER NOT NULL, -- Stored as UNIX timestamp
-    FOREIGN KEY(user_id) REFERENCES User(id),
-    FOREIGN KEY(project_id) REFERENCES EcoProject(id)
 );

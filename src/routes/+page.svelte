@@ -2,12 +2,14 @@
 	import SubsCalendar from "../components/SubsCalendar.svelte";
 	import SubscriptionList from "../components/SubscriptionList.svelte";
 	import {providers, subscriptions} from "$lib/store.js";
+	import EcoProjectsList from "../components/EcoProjectsList.svelte";
 
 	let {data} = $props();
 	providers.set([{id: '_CUSTOM', name: 'Custom', logo_url: '/icons/add.png'}, ...data.providers]);
 	subscriptions.set(data.subscriptions);
 
 	let showSubManager = $state(false); // Only applies on smaller viewports.
+	let showProjects = $state(false);
 
 	let currentMonth = $state(new Date().getMonth())
 	let currentYear = $state(new Date().getFullYear());
@@ -102,6 +104,7 @@
 			<div class="text-center">
 				<h3 class="text-xs sm:text-lg">Your emissions this month</h3>
 				<div class="font-extrabold font-title text-2xl sm:text-4xl">{totalEmissions}kgCO2e</div>
+				<a onclick={() => showProjects = true} class="text-xs hover:underline cursor-pointer">I want to compensate!</a>
 			</div>
 		</div>
 		<div class="flex gap-2 justify-center my-6">
@@ -117,6 +120,9 @@
 		/>
 	</div>
 </div>
+{#if showProjects}
+	<EcoProjectsList onClose={() => showProjects = false}></EcoProjectsList>
+{/if}
 
 <style>
 	@import 'tailwindcss';
