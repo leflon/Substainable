@@ -106,7 +106,8 @@
 				<h3 class="text-xs sm:text-lg">Your emissions this month</h3>
 				<div
 					class="font-extrabold font-title text-2xl sm:text-4xl">{Math.ceil(totalEmissions)}
-					kgCO2e</div>
+					kgCO2e
+				</div>
 				<a onclick={() => showProjects = true} class="text-xs hover:underline cursor-pointer">I want to compensate!</a>
 			</div>
 		</div>
@@ -123,9 +124,11 @@
 		/>
 	</div>
 </div>
-{#if showProjects}
-	<EcoProjectsList onClose={() => showProjects = false}></EcoProjectsList>
-{/if}
+<div class={showProjects ? '': 'hidden'}>
+	<EcoProjectsList
+		onClose={() => showProjects = false}
+	></EcoProjectsList>
+</div>
 
 <style>
 	@import 'tailwindcss';
