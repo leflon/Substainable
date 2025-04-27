@@ -41,10 +41,13 @@ already hade one before running this command.**
 ```bash 
 sqlite3 db.sqlite < src/sb/tables.sql
 ```
+
 ```bash 
 sqlite3 db.sqlite < src/sb/providers.sql
 ```
-
+```bash 
+sqlite3 db.sqlite < src/sb/ecoprojects.sql
+```
 ### Setting env variables
 This projects uses `jsonwebtoken` to keep track of auth sessions. This 
 Related settings are set in environment variables. You can find these in `.
