@@ -99,11 +99,14 @@
 		<div class="grid mt-6 mx-auto gap-6 grid-cols-2 grid-rows-1 max-w-150 ">
 			<div class="text-center">
 				<h3 class="text-xs sm:text-lg">Your expenses this month</h3>
-				<div class="font-extrabold font-tile text-2xl sm:text-4xl">€{totalExpenses}</div>
+				<div class="font-extrabold font-tile text-2xl sm:text-4xl">€
+					{parseFloat(totalExpenses.toFixed(2))}</div>
 			</div>
 			<div class="text-center">
 				<h3 class="text-xs sm:text-lg">Your emissions this month</h3>
-				<div class="font-extrabold font-title text-2xl sm:text-4xl">{totalEmissions}kgCO2e</div>
+				<div
+					class="font-extrabold font-title text-2xl sm:text-4xl">{Math.ceil(totalEmissions)}
+					kgCO2e</div>
 				<a onclick={() => showProjects = true} class="text-xs hover:underline cursor-pointer">I want to compensate!</a>
 			</div>
 		</div>

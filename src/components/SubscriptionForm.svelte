@@ -37,7 +37,7 @@
 	class="z-100 fixed w-full h-full top-0 left-0 flex justify-center items-center
 		backdrop-blur-xl bg-black/40">
 	<form
-		class="relative overflow-hidden px-3 w-full h-full box-border bg-white
+		class="relative overflow-scroll px-3 w-full h-full box-border bg-white
 		lg:w-230 lg:h-128 lg:rounded-lg lg:shadow-lg"
 		onsubmit={handleSubmit}
 	>
